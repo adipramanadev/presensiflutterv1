@@ -40,6 +40,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  //inisialisasi
+  @override
+  void initState() {
+    super.initState();
+    _token = _prefs.then((SharedPreferences prefs) {
+      return prefs.getString("token") ?? "";
+    });
+    _name = _prefs.then((SharedPreferences prefs) {
+      return prefs.getString("name") ?? "";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +66,30 @@ class _HomePageState extends State<HomePage> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    children: [],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FutureBuilder(
+                          future: _name,
+                          builder: (BuildContext context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else {
+                              if (snapshot.hasData) {
+                                print(snapshot.data);
+                                return Text(
+                                  snapshot.data.toString(),
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                );
+                              } else {
+                                return Text("-",
+                                    style: TextStyle(fontSize: 20));
+                              }
+                            }
+                          }),
+                    ],
                   ),
                 ),
               );

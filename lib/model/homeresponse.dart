@@ -19,8 +19,11 @@ class HomeResponseModel {
 
   factory HomeResponseModel.fromJson(Map<String, dynamic> json) =>
       HomeResponseModel(
-        success: json["success"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        success: json["success"] ?? false,
+        data: (json["data"] as List<dynamic>?)
+                ?.map((x) => Datum.fromJson(x))
+                .toList() ??
+            [],
         message: json["message"],
       );
 
