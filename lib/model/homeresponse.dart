@@ -23,7 +23,7 @@ class HomeResponseModel {
         data: (json["data"] as List<dynamic>?)
                 ?.map((x) => Datum.fromJson(x))
                 .toList() ??
-            [],
+            [], // Use an empty list if data is null
         message: json["message"],
       );
 
