@@ -155,9 +155,32 @@ class _HomePageState extends State<HomePage> {
                                     ],
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      const Text(
+                        'Riwayat Presensi',
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: riwayat.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: ListTile(
+                                leading: Text(riwayat[index].tanggal ?? '-'),
+                                title: Row(
+                                  children: [
+                                    Text('Masuk: ' + (riwayat[index].masuk)),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       )
                     ],
