@@ -1,41 +1,38 @@
 import 'dart:convert';
 
-HomeResponseModel homeResponseModelFromJson(String str) =>
-    HomeResponseModel.fromJson(json.decode(str));
+SavePresensiResponseModel savePresensiResponseModelFromJson(String str) =>
+    SavePresensiResponseModel.fromJson(json.decode(str));
 
-String homeResponseModelToJson(HomeResponseModel data) =>
+String savePresensiResponseModelToJson(SavePresensiResponseModel data) =>
     json.encode(data.toJson());
 
-class HomeResponseModel {
-  HomeResponseModel({
+class SavePresensiResponseModel {
+  SavePresensiResponseModel({
     required this.success,
     required this.data,
     required this.message,
   });
 
   bool success;
-  List<Datum> data;
+  Data data;
   String message;
 
-  factory HomeResponseModel.fromJson(Map<String, dynamic> json) =>
-      HomeResponseModel(
-        success: json["success"] ?? false,
-        data: (json["data"] as List<dynamic>?)
-                ?.map((x) => Datum.fromJson(x))
-                .toList() ??
-            [], // Use an empty list if data is null
+  factory SavePresensiResponseModel.fromJson(Map<String, dynamic> json) =>
+      SavePresensiResponseModel(
+        success: json["success"],
+        data: Data.fromJson(json["data"]),
         message: json["message"],
       );
 
   Map<String, dynamic> toJson() => {
         "success": success,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data.toJson(),
         "message": message,
       };
 }
 
-class Datum {
-  Datum({
+class Data {
+  Data({
     required this.id,
     required this.userId,
     required this.latitude,
@@ -45,31 +42,28 @@ class Datum {
     required this.pulang,
     required this.createdAt,
     required this.updatedAt,
-    required this.isHariIni,
   });
 
   int id;
   String userId;
   String latitude;
   String longitude;
-  String tanggal;
+  DateTime tanggal;
   String masuk;
-  String pulang;
+  dynamic pulang;
   DateTime createdAt;
   DateTime updatedAt;
-  bool isHariIni;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         userId: json["user_id"],
         latitude: json["latitude"],
         longitude: json["longitude"],
-        tanggal: json["tanggal"],
+        tanggal: DateTime.parse(json["tanggal"]),
         masuk: json["masuk"],
         pulang: json["pulang"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        isHariIni: json["is_hari_ini"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -77,11 +71,11 @@ class Datum {
         "user_id": userId,
         "latitude": latitude,
         "longitude": longitude,
-        "tanggal": tanggal,
+        "tanggal":
+            "${tanggal.year.toString().padLeft(4, '0')}-${tanggal.month.toString().padLeft(2, '0')}-${tanggal.day.toString().padLeft(2, '0')}",
         "masuk": masuk,
         "pulang": pulang,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-        "is_hari_ini": isHariIni,
       };
 }
